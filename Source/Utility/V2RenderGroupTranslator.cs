@@ -25,12 +25,13 @@ namespace RimWorldHolsters.Utility
          
         private static HolsterWeaponRenderGroup TranslateWeaponGroup(WeaponGroupCordInfo oldGroup)
         {
-            HolsterWeaponRenderGroup newGroup = new HolsterWeaponRenderGroup(oldGroup.Name);
+            HolsterWeaponRenderGroup newGroup = new HolsterWeaponRenderGroup(oldGroup.Name)
+            {
+                Weapons = new List<string>(oldGroup.weapons),
+                ShouldDisplay = oldGroup.isDisplay,
 
-            newGroup.Weapons = new List<string>(oldGroup.weapons);
-            newGroup.ShouldDisplay = oldGroup.isDisplay;
-
-            newGroup.HolsterRenderData = GetRenderData(oldGroup);
+                HolsterRenderData = GetRenderData(oldGroup)
+            };
 
             return newGroup;
         }
@@ -39,8 +40,8 @@ namespace RimWorldHolsters.Utility
         {
             var configurations = new Dictionary<Rot4, HolsterConfiguration>();
             var sideConfigurations = new Dictionary<Rot4, HolsterConfiguration>();
-
-            foreach (Rot4 worldRot in Enum.GetValues(typeof(Rot4)))
+           
+            foreach (Rot4 worldRot in Rot4.AllRotations)
             {
                 HolsterConfiguration configuration = new HolsterConfiguration
                 {
