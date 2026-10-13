@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using RimWorldHolsters.Utility.Old;
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
@@ -289,8 +290,8 @@ namespace RimWorldHolsters
         public Dictionary<Rot4, bool> flipSide;
         public Dictionary<Rot4, bool> isFrontSide;
 
-        private Dictionary<BodyType, float> bodyOffsetModifs;
-        private Dictionary<BodyType, float> bodyOffsetModifsSide;
+        public Dictionary<BodyType, float> bodyOffsetModifs;
+        public Dictionary<BodyType, float> bodyOffsetModifsSide;
 
         public Dictionary<Rot4, Vector3> bodyOffset;
         public Dictionary<Rot4, Vector3> bodyOffsetSide;

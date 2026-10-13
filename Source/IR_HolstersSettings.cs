@@ -25,7 +25,7 @@ namespace RimWorldHolsters
             Scribe_Collections.Look(ref RenderGroups, "renderGroups", LookMode.Deep);
 
             // Old
-            Scribe_Collections.Look(ref groups, "groupsCordSettings4" /*changed from 3 to 4 for development for now*/, LookMode.Deep);
+            Scribe_Collections.Look(ref groups, "groupsCordSettings3" /*changed from 3 to 4 for development for now*/, LookMode.Deep);
             Scribe_Values.Look(ref DisplaySidearms, "displaySide", true);
             Scribe_Values.Look(ref SmartSideDisplay, "smartSideDisplay", true);
             Scribe_Values.Look(ref IsFirstLaunch, "isFirstLaunch7", true);
@@ -53,7 +53,19 @@ namespace RimWorldHolsters
 
         public static void RestoreV1WeaponRenderGroups()
         {
+            Log.Message("[Holsters] Converting from the old settings.");
+
+            if (groups is null)
+            {
+                Log.Message("[Holsters] Legacy mod settings are absent. Aborting conversion...");
+                return;
+            }
+
+            Log.Message("[Holsters] Detected legacy mod settings. Starting conversion...");
+
             V2RenderGroupTranslator.UpdateModSettings(groups);
+
+            Log.Message("[Holsters] Conversion successful.");
         }
 
         private static bool ShouldInitializeGroups() => IsFirstLaunch || RenderGroups.NullOrEmpty();

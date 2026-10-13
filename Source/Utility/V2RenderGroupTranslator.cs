@@ -71,8 +71,8 @@ namespace RimWorldHolsters.Utility
             {
                 Configuration = configurations,
                 SideConfiguration = sideConfigurations,
-                BodyOffsetsModifiers = oldGroup.bodyOffsetModifiers
-                
+                BodyOffsetsModifiers = oldGroup.bodyOffsetModifs.ToDictionary(modif => modif.Key.ToString(), modif => modif.Value),
+                BodyOffsetsSideModifiers = oldGroup.bodyOffsetModifsSide.ToDictionary(modif => modif.Key.ToString(), modif => modif.Value),
             };
         }
     }
