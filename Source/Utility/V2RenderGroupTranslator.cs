@@ -43,27 +43,25 @@ namespace RimWorldHolsters.Utility
            
             foreach (Rot4 worldRot in Rot4.AllRotations)
             {
-                HolsterConfiguration configuration = new HolsterConfiguration
-                {
-                    Position = oldGroup.pos[worldRot],
-                    Rotation = oldGroup.angle[worldRot],
-                    Size = oldGroup.GetSize(worldRot),
-                    IsAtFront = oldGroup.isFront[worldRot],
-                    IsFlipped = oldGroup.flip[worldRot],
-                    BodyOffset = oldGroup.bodyOffset[worldRot]
-                };
+                HolsterConfiguration configuration = new HolsterConfiguration(
+                    position: oldGroup.pos[worldRot],
+                    rotation: oldGroup.angle[worldRot],
+                    size: oldGroup.GetSize(worldRot),
+                    isFlipped: oldGroup.flip[worldRot],
+                    isAtFront: oldGroup.isFront[worldRot],
+                    bodyOffset: oldGroup.bodyOffset[worldRot]
+                );
 
                 configurations.Add(worldRot, configuration);
 
-                HolsterConfiguration sideConfiguration = new HolsterConfiguration
-                {
-                    Position = oldGroup.posSide[worldRot],
-                    Rotation = oldGroup.angleSide[worldRot],
-                    Size = oldGroup.GetSize(worldRot),
-                    IsAtFront = oldGroup.isFrontSide[worldRot],
-                    IsFlipped = oldGroup.flipSide[worldRot],
-                    BodyOffset = oldGroup.bodyOffsetSide[worldRot]
-                };
+                HolsterConfiguration sideConfiguration = new HolsterConfiguration(
+                    position: oldGroup.posSide[worldRot],
+                    rotation: oldGroup.angleSide[worldRot],
+                    size: oldGroup.GetSize(worldRot),
+                    isFlipped: oldGroup.flipSide[worldRot],
+                    isAtFront: oldGroup.isFrontSide[worldRot],
+                    bodyOffset: oldGroup.bodyOffsetSide[worldRot]
+                );
 
                 sideConfigurations.Add(worldRot, sideConfiguration);
             }

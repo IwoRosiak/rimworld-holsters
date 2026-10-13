@@ -63,7 +63,7 @@ namespace RimWorldHolsters
 
             Log.Message("[Holsters] Detected legacy mod settings. Starting conversion...");
 
-            V2RenderGroupTranslator.UpdateModSettings(groups);
+            RenderGroups = V2RenderGroupTranslator.UpdateModSettings(groups);
 
             Log.Message("[Holsters] Conversion successful.");
         }
