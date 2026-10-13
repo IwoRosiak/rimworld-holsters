@@ -10,29 +10,22 @@ namespace RimWorldHolsters
     public class IR_HolstersSettings : ModSettings
     {
         public static string LastSelectedHeadType;
-
-
-        public static bool IsFirstLaunch;
-
+        public static bool IsFirstLaunch;    
         public static bool DisplaySidearms;
-
         public static bool SmartSideDisplay;
-
         public static bool DisplayIndoors = true;
-
         public static List<HolsterWeaponRenderGroup> RenderGroups;
+        public static List<WeaponGroupCordInfo> groups;
 
         public IR_HolstersSettings() { }
-
 
         public override void ExposeData()
         {
             // New
             Scribe_Collections.Look(ref RenderGroups, "renderGroups", LookMode.Deep);
 
-
             // Old
-            //Scribe_Collections.Look(ref groups,"groupsCordSettings4" /*changed from 3 to 4 for development for now*/, LookMode.Deep);
+            Scribe_Collections.Look(ref groups, "groupsCordSettings4" /*changed from 3 to 4 for development for now*/, LookMode.Deep);
             Scribe_Values.Look(ref DisplaySidearms, "displaySide", true);
             Scribe_Values.Look(ref SmartSideDisplay, "smartSideDisplay", true);
             Scribe_Values.Look(ref IsFirstLaunch, "isFirstLaunch7", true);
@@ -56,6 +49,11 @@ namespace RimWorldHolsters
             }
 
             IsFirstLaunch = false;
+        }
+
+        public static void RestoreV1WeaponRenderGroups()
+        {
+            V2RenderGroupTranslator.UpdateModSettings(groups);
         }
 
         private static bool ShouldInitializeGroups() => IsFirstLaunch || RenderGroups.NullOrEmpty();
