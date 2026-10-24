@@ -82,13 +82,6 @@ namespace RimWorldHolsters
            
             middleListing.End();
 
-            var convertButtonRect = new Rect(inRect.x + (0.2f * inRect.width), inRect.y, 0.2f * inRect.width, 0.1f * inRect.height);
-
-            if (Widgets.ButtonText(convertButtonRect, "Convert from the old settings"))
-            {
-                IR_HolstersSettings.RestoreV1WeaponRenderGroups();
-            }
-
             var bodyFrameRect = new Rect(inRect.x + (0.2f * inRect.width), inRect.y + (0.34f * inRect.height), 0.6f * inRect.width, 0.6f * inRect.height);
             IR_ModSettingsDrawer.DrawPawn(bodyFrameRect);
 
@@ -105,6 +98,12 @@ namespace RimWorldHolsters
 
             _ = dangerZoneListing.Label("DANGER ZONE");
             dangerZoneListing.Gap();
+
+            if (dangerZoneListing.ButtonText("Convert legacy settings"))
+            {
+                IR_HolstersSettings.RestoreV1WeaponRenderGroups();
+                _ = TryLoadWeapons(true);
+            }
 
             if (dangerZoneListing.ButtonText("Restore default settings") && _restoreDefaultConfirmation)
             {
