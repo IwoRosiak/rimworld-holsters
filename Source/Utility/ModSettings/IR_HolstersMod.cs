@@ -1,6 +1,8 @@
 ﻿using RimWorld;
 using RimWorldHolsters.Utility;
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -97,23 +99,26 @@ namespace RimWorldHolsters
             _ = dangerZoneListing.Label("DANGER ZONE");
             dangerZoneListing.Gap();
 
+            _ = dangerZoneListing.Label("Back up your settings before converting or resetting.");
+            dangerZoneListing.Gap();
+
             if (dangerZoneListing.ButtonText("Convert legacy settings"))
             {
-                Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(
+                ShowBackupConfirmation(
+                    "Convert legacy settings?",
                     "This will replace your current weapon groups and holster positions with the saved legacy settings. Any changes made to the new settings will be lost.",
                     () =>
                     {
                         IR_HolstersSettings.RestoreV1WeaponRenderGroups();
                         CurGroupIndex = 0;
                         _ = TryLoadWeapons(true);
-                    },
-                    destructive: true,
-                    title: "Convert legacy settings?"));
+                    });
             }
 
             if (dangerZoneListing.ButtonText("Restore default settings"))
             {
-                Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(
+                ShowBackupConfirmation(
+                    "Restore default settings?",
                     "This will replace all current weapon groups, assignments, and holster positions with the default settings. This cannot be undone.",
                     () =>
                     {
@@ -121,9 +126,7 @@ namespace RimWorldHolsters
                         CurWeaponIndex = 0;
                         IR_HolstersSettings.ResetAllGroups();
                         _ = TryLoadWeapons(true);
-                    },
-                    destructive: true,
-                    title: "Restore default settings?"));
+                    });
             }
 
             dangerZoneListing.End();
@@ -424,6 +427,55 @@ namespace RimWorldHolsters
 
             _ = fromGroup.Weapons.Remove(weapon.defName);
             IR_HolstersSettings.RenderGroups[toGroupIndex].Weapons.Add(weapon.defName);
+        }
+
+        private void ShowBackupConfirmation(string title, string message, Action confirmedAction)
+        {
+            string settingsFolder = GenFilePaths.ConfigFolderPath;
+            string settingsFile = Path.Combine(
+                settingsFolder,
+                GenText.SanitizeFilename(string.Format("Mod_{0}_{1}.xml", Content.FolderName, _settings.GetType().Name)));
+            string confirmationText = "Back up this settings file before proceeding:\n" + settingsFile + "\n\n" + message;
+
+            var dialog = new Dialog_MessageBox(
+                confirmationText,
+                "Continue",
+                confirmedAction,
+                "Cancel",
+                null,
+                title,
+                true);
+
+            dialog.buttonCText = "Open folder";
+            dialog.buttonCAction = () =>
+            {
+                string error = OpenModSettingsFolder(settingsFolder);
+                if (!error.NullOrEmpty())
+                    dialog.text = confirmationText + "\n\n" + error;
+            };
+            dialog.buttonCClose = false;
+
+            Find.WindowStack.Add(dialog);
+        }
+
+        private string OpenModSettingsFolder(string path)
+        {
+            try
+            {
+                if (!Directory.Exists(path))
+                    throw new DirectoryNotFoundException("The mod settings folder does not exist yet.");
+
+                _ = Process.Start(new ProcessStartInfo
+                {
+                    FileName = path,
+                    UseShellExecute = true
+                });
+                return null;
+            }
+            catch (Exception exception)
+            {
+                return "Could not open the mod settings folder: " + exception.Message;
+            }
         }
     }
 }

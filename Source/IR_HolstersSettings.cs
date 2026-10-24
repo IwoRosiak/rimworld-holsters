@@ -36,8 +36,7 @@ namespace RimWorldHolsters
 
             if (Scribe.mode == LoadSaveMode.PostLoadInit && RenderGroups.NullOrEmpty() && !groups.NullOrEmpty())
             {
-                RenderGroups = V2RenderGroupTranslator.UpdateModSettings(groups);
-                Log.Message("[Holsters] Converted legacy weapon render settings.");
+                ConvertLegacyWeaponRenderGroups();
             }
         }
 
@@ -59,14 +58,25 @@ namespace RimWorldHolsters
 
         public static void RestoreV1WeaponRenderGroups()
         {
-            if (groups.NullOrEmpty())
+            if (!ConvertLegacyWeaponRenderGroups())
             {
                 Log.Message("[Holsters] Legacy weapon render settings are unavailable.");
-                return;
             }
+        }
 
-            RenderGroups = V2RenderGroupTranslator.UpdateModSettings(groups);
-            Log.Message("[Holsters] Converted legacy weapon render settings.");
+        private static bool ConvertLegacyWeaponRenderGroups()
+        {
+            if (groups.NullOrEmpty())
+                return false;
+
+            List<HolsterWeaponRenderGroup> convertedGroups = V2RenderGroupTranslator.UpdateModSettings(groups);
+            if (convertedGroups.NullOrEmpty())
+                return false;
+
+            RenderGroups = convertedGroups;
+            groups = null;
+            Log.Message("[Holsters] Converted legacy weapon render settings and cleared the old data.");
+            return true;
         }
 
         private static bool ShouldInitializeGroups() => IsFirstLaunch || RenderGroups.NullOrEmpty();
