@@ -21,7 +21,8 @@ namespace RimWorldHolsters.Core.RenderNodes
 
             if (pawn.equipment.Primary != null && ShouldAddHolsterNode(pawn.equipment.Primary))
             {
-                if (!PawnRenderUtility.CarryWeaponOpenly(pawn))
+                HolsterWeaponRenderGroup curGroup = IR_HolstersSettings.GetWeaponGroupOf(pawn.equipment.Primary.def.defName);
+                if (curGroup.ShouldDisplay && !PawnRenderUtility.CarryWeaponOpenly(pawn))
                 {
                     foreach ((PawnRenderNode node, PawnRenderNode parent) result in ProcessWeapon(pawn, tree, pawn.equipment.Primary, holsterNode, false, true))
                     {
@@ -32,8 +33,8 @@ namespace RimWorldHolsters.Core.RenderNodes
                     }
                 }
 
-                HolsterWeaponRenderGroup curGroup = IR_HolstersSettings.GetWeaponGroupOf(pawn.equipment.Primary.def.defName);
-                filledSlots.Add(curGroup);
+                if (curGroup.ShouldDisplay)
+                    filledSlots.Add(curGroup);
             }
 
             if (!IR_HolstersSettings.DisplaySidearms)
@@ -46,16 +47,19 @@ namespace RimWorldHolsters.Core.RenderNodes
                 if (!ShouldAddHolsterNode(item))
                     continue;
 
-                Log.Message("Processing: " + item.def.defName);
+                //Log.Message("Processing: " + item.def.defName);
+                HolsterWeaponRenderGroup curGroup = IR_HolstersSettings.GetWeaponGroupOf(item.def.defName);
+                if (!curGroup.ShouldDisplay)
+                    continue;
 
-                bool isSidearm = IsSide(IR_HolstersSettings.GetWeaponGroupOf(item.def.defName), filledSlots);
+                bool isSidearm = IsSide(curGroup, filledSlots);
 
                 foreach ((PawnRenderNode node, PawnRenderNode parent) result in ProcessWeapon(pawn, tree, item, holsterNode, isSidearm, false))
                 {
                     if (result.node != null)
                         yield return result;
 
-                    filledSlots.Add(IR_HolstersSettings.GetWeaponGroupOf(item.def.defName));
+                    filledSlots.Add(curGroup);
                     //Log.Message("Adding secondary weapon");
                 }
             }
