@@ -17,8 +17,6 @@ namespace RimWorldHolsters
         private readonly IR_HolstersSettings _settings;
 
         private string _errorLog;
-        private bool _restoreDefaultConfirmation;
-
         private float _receivingGroupIndex;
         private string _groupName;
 
@@ -101,21 +99,32 @@ namespace RimWorldHolsters
 
             if (dangerZoneListing.ButtonText("Convert legacy settings"))
             {
-                IR_HolstersSettings.RestoreV1WeaponRenderGroups();
-                _ = TryLoadWeapons(true);
+                Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(
+                    "This will replace your current weapon groups and holster positions with the saved legacy settings. Any changes made to the new settings will be lost.",
+                    () =>
+                    {
+                        IR_HolstersSettings.RestoreV1WeaponRenderGroups();
+                        CurGroupIndex = 0;
+                        _ = TryLoadWeapons(true);
+                    },
+                    destructive: true,
+                    title: "Convert legacy settings?"));
             }
 
-            if (dangerZoneListing.ButtonText("Restore default settings") && _restoreDefaultConfirmation)
+            if (dangerZoneListing.ButtonText("Restore default settings"))
             {
-                CurGroupIndex = 0;
-                CurWeaponIndex = 0;
-                IR_HolstersSettings.ResetAllGroups();
-
-                _ = TryLoadWeapons(true);
-                return;
+                Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(
+                    "This will replace all current weapon groups, assignments, and holster positions with the default settings. This cannot be undone.",
+                    () =>
+                    {
+                        CurGroupIndex = 0;
+                        CurWeaponIndex = 0;
+                        IR_HolstersSettings.ResetAllGroups();
+                        _ = TryLoadWeapons(true);
+                    },
+                    destructive: true,
+                    title: "Restore default settings?"));
             }
-
-            dangerZoneListing.CheckboxLabeled("Confirm: ", ref _restoreDefaultConfirmation, "It cannot be reversed!");
 
             dangerZoneListing.End();
 
