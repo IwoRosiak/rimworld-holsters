@@ -9,7 +9,7 @@ namespace RimWorldHolsters.Core.RenderNodes
 
         public override IEnumerable<(PawnRenderNode node, PawnRenderNode parent)> GetDynamicNodes(Pawn pawn, PawnRenderTree tree)
         {
-            if (pawn.equipment == null || pawn.equipment.AllEquipmentListForReading.Count == 0)
+            if (pawn.equipment == null)
                 yield break;
 
 
