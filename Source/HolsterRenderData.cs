@@ -50,6 +50,9 @@ namespace Holsters
             if (BodyOffsetsSideModifiers == null)
                 BodyOffsetsSideModifiers = GetDefaultBodyModifiersDictionary();
 
+            if (bodyTypeDefName.NullOrEmpty())
+                return 0f;
+
             bodyTypeDefName = bodyTypeDefName.ToLower();
             Dictionary<string, float> dict = side ? BodyOffsetsSideModifiers : BodyOffsetsModifiers;
 
