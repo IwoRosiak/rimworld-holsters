@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.8.34322.80
+# Visual Studio Version 18
+VisualStudioVersion = 18.10.12224.181 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimWorldHolsters", "RimWorldHolsters.csproj", "{776FC040-938E-4254-89EA-5174D33D2F28}"
 EndProject
@@ -11,6 +11,7 @@ Global
 		RimWorld_1.4|Any CPU = RimWorld_1.4|Any CPU
 		RimWorld_1.5|Any CPU = RimWorld_1.5|Any CPU
 		RimWorld_1.6|Any CPU = RimWorld_1.6|Any CPU
+		RimWorld_1.7|Any CPU = RimWorld_1.7|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{776FC040-938E-4254-89EA-5174D33D2F28}.RimWorld_1.3|Any CPU.ActiveCfg = RimWorld_1.3|Any CPU
@@ -21,6 +22,8 @@ Global
 		{776FC040-938E-4254-89EA-5174D33D2F28}.RimWorld_1.5|Any CPU.Build.0 = RimWorld_1.5|Any CPU
 		{776FC040-938E-4254-89EA-5174D33D2F28}.RimWorld_1.6|Any CPU.ActiveCfg = RimWorld_1.6|Any CPU
 		{776FC040-938E-4254-89EA-5174D33D2F28}.RimWorld_1.6|Any CPU.Build.0 = RimWorld_1.6|Any CPU
+		{776FC040-938E-4254-89EA-5174D33D2F28}.RimWorld_1.7|Any CPU.ActiveCfg = RimWorld_1.7|Any CPU
+		{776FC040-938E-4254-89EA-5174D33D2F28}.RimWorld_1.7|Any CPU.Build.0 = RimWorld_1.7|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
