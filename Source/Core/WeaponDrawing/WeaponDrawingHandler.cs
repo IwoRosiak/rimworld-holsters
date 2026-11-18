@@ -74,14 +74,7 @@ namespace RimWorldHolsters.Core
 
         private bool IsSide(WeaponGroupCordInfo curGroup)
         {
-            bool isSide = true;
-
-            if (IR_HolstersSettings.smartSideDisplay && !_filledSlots.Contains(curGroup))
-            {
-                isSide = false;
-            }
-
-            return isSide;
+            return IR_HolstersSettings.smartSideDisplay && _filledSlots.Contains(curGroup);
         }
     }
 }
